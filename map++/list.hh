@@ -3,21 +3,33 @@
 
 using namespace std;
 
-template <class T>
+template <typename K, typename V>
 
+struct KVP {
+    K key;
+    V value;
+
+    KVP(const K &k, const V &v) {
+        this->key = k;
+        this->value = v;
+    }
+};
+
+
+template <typename K, typename V>
 
 struct List {
     private:
         int curr_index; 
         int size;
-        T *backing;
+        KVP<K, V> **backing;
 
 
     public:
         List() {
             curr_index = 0;
             size = 10;
-            backing = new T[size];
+            backing = new KVP<K, V>*[size];
         }
 
         ~List() {
@@ -25,38 +37,35 @@ struct List {
             backing = nullptr;
         }
 
-
         int len() {
             return curr_index;
         }
 
         void print() {
-            cout << "\n[";
+            cout << "\n[\n";
             for (int i = 0; i < curr_index; i++) {
-                cout << backing[i];
-                if ((i + 1) < curr_index) {
-                    cout << ", ";
-                }
+                KVP<K, V> item = *backing[i];
+                cout << " {" << item.key << ", " << item.value << "}" << "\n";
             }
-            cout << "]\n";
+            cout << "]";
         }
 
-        void append(T item) {
+        void append(KVP<K, V> item) {
             if ((curr_index + 1) < size) {
-                backing[curr_index] = item;
+                backing[curr_index] = &item;
             }
             else {
                 int new_size = (size * 2);
-                T old_array[curr_index];
+                KVP<K, V> *old_array[curr_index];
                 for (int i = 0; i < curr_index; i++) {
                     old_array[i] = backing[i];
                 }
-                backing = new T[new_size];
+                backing = new KVP<K, V>*[new_size];
                 size = new_size;
                 for (int c = 0; c < curr_index; c++) {
                     backing[c] = old_array[c];
                 }
-                backing[curr_index] = item;
+                backing[curr_index] = &item;
             }
             curr_index += 1;
         }
@@ -73,7 +82,7 @@ struct List {
             }
         }
 
-        int find(T item) {
+        int find(KVP<K, V> item) {
             for (int i = 0; i < curr_index; i++) {
                 if (backing[i] == item) {
                     return i;
@@ -83,7 +92,7 @@ struct List {
             return -1;
         }
 
-        T get(int idx) {
+        KVP<K, V> get(int idx) {
             if (idx < curr_index) {
                 return backing[idx];
             }

@@ -4,62 +4,41 @@
 
 using namespace std;
 
-template <typename K, typename V>
-
-struct KVP {
-    K key;
-    V value;
-
-    KVP(K k, V v) {
-        this->key = k;
-        this->value = v;
-    }
-};
-
 
 template <typename K, typename V>
 
 class Map {
     private:
         int size;
-        List<KVP<K, V>> **backing;
+        List<K, V> **backing;
 
-        void initialize() {
-            size = 10;
-            backing = new List<KVP<K, V>>*[size];
+    public:
+        Map() {
+           size = 10;
+            backing = new List<K, V>*[size];
             for (int i = 0; i < size; i++) {
                 backing[i] = nullptr;
             }
         }
 
-        bool nullcheck() {
-            if (backing == nullptr) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-
-    public:
-        Map() {
-           initialize();
+        ~Map() {
+            delete[] backing;
+            backing = nullptr;
         }
 
         void print() {
-            if (!nullcheck()) {
-                
-            }
-            else {
-                initialize();
-                print();
+            for (int i = 0; i < size; i++) {
+                cout << i;
+                if (backing[i] != nullptr) {
+                    List<K, V> chain = *backing[i];
+                    chain.print();
+                }
             }
         }
 
         int hash(string key) {
             int hash_val = 0;
-            for(int i = 0; i < key.length(); i++) {
+            for(int i = 0; i < (int)key.length(); i++) {
                 int curr_char = key.at(i);
                 hash_val = (hash_val * 19 + curr_char) % size;
             }
@@ -73,40 +52,20 @@ class Map {
         }
 
         void insert(K key, V value) {
-            if (!nullcheck()) {
-                int index = hash(key);
-                cout << index;
-                KVP<K, V> new_pair(key, value);
-                if (backing[index] == nullptr) {
-                    backing[index] = new List<KVP<K, V>>;
-                    List<KVP<K, V>> chain = *backing[index];
-                    chain.append(new_pair);
-                }
-                // else {
-                //     int idx = backing[index].find(key);
-                //     if (idx != -1) {
-                //         backing[index].append(new_pair);
-                //     }
-                //     else {
-                //         backing[index].remove(idx);
-                //         backing[index].append(new_pair);
-                //     }
-                // }
+            int index = hash(key);
+            KVP<K, V> new_pair(key, value);
+            if (backing[index] == nullptr) {
+                backing[index] = new List<K, V>;
+                List<K, V> chain = *backing[index];
+                chain.append(new_pair);
+                chain.print();
             }
             else {
-                initialize();
-                insert(key, value);
+                
             }
         }
 
         void remove(int idx) {
-            if (!nullcheck()) {
-
-            }
-            else {
-                initialize();
-                remove(idx);
-            }
             
         }
 
