@@ -24,11 +24,11 @@ struct Map {
         }
 
         ~Map() {
-            // for (int i = 0; i < size; i++) {
-            //     if (backing[i] != nullptr) {
-            //         delete backing[i];
-            //     }
-            // }
+            for (int i = 0; i < size; i++) {
+                if (backing[i] != nullptr) {
+                    delete backing[i];
+                }
+            }
             delete[] backing;
             backing = nullptr;
         }

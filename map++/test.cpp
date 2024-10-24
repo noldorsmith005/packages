@@ -15,7 +15,6 @@ int main() {
     // list.append(kvp2);
     // list.print();
 
-    map.print();
     map.insert("test1", 1);
     map.print();
     map.insert("test2", 3);
