@@ -32,7 +32,7 @@ struct List {
             backing = new KVP<K, V>*[size];
         }
 
-        ~List() {
+        void free() {
             delete[] backing;
             backing = nullptr;
         }
@@ -52,7 +52,8 @@ struct List {
 
         void append(KVP<K, V> item) {
             if ((curr_index + 1) < size) {
-                backing[curr_index] = &item;
+                KVP<K, V> *new_item = new KVP<K, V>(item.key, item.value);
+                backing[curr_index] = new_item;
             }
             else {
                 int new_size = (size * 2);
@@ -82,9 +83,10 @@ struct List {
             }
         }
 
-        int find(KVP<K, V> item) {
+        int find(K item) {
             for (int i = 0; i < curr_index; i++) {
-                if (backing[i] == item) {
+                KVP<K, V> kvp = *backing[i];
+                if (kvp.key == item) {
                     return i;
                 }
             }
@@ -94,7 +96,7 @@ struct List {
 
         KVP<K, V> get(int idx) {
             if (idx < curr_index) {
-                return backing[idx];
+                return *backing[idx];
             }
             else {
                 throw invalid_argument("Index out of bounds. ");

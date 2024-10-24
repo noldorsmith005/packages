@@ -7,7 +7,7 @@ using namespace std;
 
 template <typename K, typename V>
 
-class Map {
+struct Map {
     private:
         int size;
         List<K, V> **backing;
@@ -22,13 +22,17 @@ class Map {
         }
 
         ~Map() {
+            // for (int i = 0; i < size; i++) {
+            //     if (backing[i] != nullptr) {
+            //         delete backing[i];
+            //     }
+            // }
             delete[] backing;
             backing = nullptr;
         }
 
         void print() {
             for (int i = 0; i < size; i++) {
-                cout << i;
                 if (backing[i] != nullptr) {
                     List<K, V> chain = *backing[i];
                     chain.print();
@@ -54,14 +58,24 @@ class Map {
         void insert(K key, V value) {
             int index = hash(key);
             KVP<K, V> new_pair(key, value);
+            List<K, V> new_chain;
             if (backing[index] == nullptr) {
-                backing[index] = new List<K, V>;
-                List<K, V> chain = *backing[index];
-                chain.append(new_pair);
-                chain.print();
+                new_chain.append(new_pair);
+                backing[index] = &new_chain;
             }
             else {
-                
+                List<K, V> old_chain = *backing[index];
+                if (old_chain.find(key) == -1) {
+                    new_chain.append(new_pair);
+                    backing[index] = &new_chain;
+                }
+                else {
+                    for (int i = 0; i < old_chain.len(); i++) {
+                        KVP<K, V> curr_item = old_chain.get(i);
+                        new_chain.append(curr_item);
+                        backing[index] = &new_chain;
+                    }
+                }
             }
         }
 
