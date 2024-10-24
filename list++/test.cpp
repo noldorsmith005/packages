@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     List<int> list;
     list.print();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000000; i++) {
         int random = rand()%10;
         list.append(random);
     }

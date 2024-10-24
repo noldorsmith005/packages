@@ -1,5 +1,5 @@
 project:
-	g++ ./test.cpp -o testlist
+	g++ ./test.cpp -o testmap
 
 
 
