@@ -8,7 +8,16 @@ using namespace std;
 
 int main() {
     Map<string, int> map;
+    // List<string, int> list;
+    // KVP<string, int> kvp("test", 9);
+    // KVP<string, int> kvp2("test2", 3);
+    // list.append(kvp);
+    // list.append(kvp2);
+    // list.print();
+
     map.print();
-    map.insert("test", 9); // "test" hashes to 6
+    map.insert("test1", 1);
+    map.print();
+    map.insert("test2", 3);
     map.print();
 }

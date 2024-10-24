@@ -30,6 +30,9 @@ struct List {
             curr_index = 0;
             size = 10;
             backing = new KVP<K, V>*[size];
+            for (int i = 0; i < size; i++) {
+                backing[i] = nullptr;
+            }
         }
 
         void free() {
@@ -39,15 +42,6 @@ struct List {
 
         int len() {
             return curr_index;
-        }
-
-        void print() {
-            cout << "\n[\n";
-            for (int i = 0; i < curr_index; i++) {
-                KVP<K, V> item = *backing[i];
-                cout << " {" << item.key << ", " << item.value << "}" << "\n";
-            }
-            cout << "]";
         }
 
         void append(KVP<K, V> item) {
@@ -90,7 +84,6 @@ struct List {
                     return i;
                 }
             }
-            cout << "Item not present in list. ";
             return -1;
         }
 
