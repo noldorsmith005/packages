@@ -19,7 +19,5 @@ int main() {
     // list.append("u");
     list.print();
     cout << "\n" << list.len() << "\n";
-    list.empty();
     list.print();
-    list.empty();
 }
