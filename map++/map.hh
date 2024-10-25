@@ -86,11 +86,31 @@ struct Map {
             items += 1;
         }
 
-        void remove(int idx) {
-            
+        void remove(K key) {
+            for (int i = 0; i < size; i++) {
+                if (backing[i] != nullptr) {
+                    List<K, V> chain = *backing[i];
+                    int idx = chain.find(key);
+                    if (idx != -1) {
+                        chain.remove(idx);
+                    }
+                    *backing[i] = chain;
+                }
+            }
         }
 
-        int get(K key) {
-
+        V get(K key) {
+            for (int i = 0; i < size; i++) {
+                if (backing[i] != nullptr) {
+                    List<K, V> chain = *backing[i];
+                    for (int c = 0; c < chain.len(); c++) {
+                        KVP<K, V> item = chain.get(c);
+                        if (item.key == key) {
+                            return item.value;
+                        }
+                    }
+                }
+            }
+            throw invalid_argument("Key not found. ");
         }
 };

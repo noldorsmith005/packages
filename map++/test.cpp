@@ -7,7 +7,7 @@ using namespace std;
 
 
 int main() {
-    Map<int, int> map;
+    Map<string, int> map;
     // List<string, int> list;
     // KVP<string, int> kvp("test", 9);
     // KVP<string, int> kvp2("test2", 3);
@@ -15,9 +15,12 @@ int main() {
     // list.append(kvp2);
     // list.print();
 
-    map.insert(1, 1);
+    map.insert("test1", 1);
+    map.insert("test2", 3);
+    map.insert("test3", 5);
     map.print();
-    map.insert(11, 3);
-    map.insert(2, 5);
+    int value = map.get("test2");
+    cout << value << "\n";
+    map.remove("test2");
     map.print();
 }
