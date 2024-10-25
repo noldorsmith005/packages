@@ -72,17 +72,16 @@ struct Map {
             }
             else {
                 List<K, V> old_chain = *backing[index];
-                if (old_chain.find(key) == -1) {
-                    (*new_chain).append(new_pair);
-                    backing[index] = new_chain;
+                int idx = old_chain.find(key);
+                if (idx != -1) {
+                    old_chain.remove(idx);
                 }
-                else {
-                    for (int i = 0; i < old_chain.len(); i++) {
-                        KVP<K, V> curr_item = old_chain.get(i);
-                        (*new_chain).append(curr_item);
-                        backing[index] = new_chain;
-                    }
+                for (int i = 0; i < old_chain.len(); i++) {
+                    KVP<K, V> item = old_chain.get(i);
+                    (*new_chain).append(item);
                 }
+                (*new_chain).append(new_pair);
+                backing[index] = new_chain;
             }
             items += 1;
         }
